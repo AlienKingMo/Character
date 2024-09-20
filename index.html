@@ -1,0 +1,1165 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Template Creator</title>
+    <style>
+	/* Base theme adjustments from CodePen */
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #ecf0f1; /* Light text color */
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #2c3e50; /* Dark background */
+}
+
+h1, h2 {
+    color: #e74c3c; /* Bright red headings */
+    margin-bottom: 15px;
+}
+
+select, input {
+    padding: 10px;
+    border: 1px solid #34495e; /* Darker border */
+    background-color: #34495e; /* Dark background for inputs */
+    color: #ecf0f1; /* Light text */
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width: 33.33%;
+}
+
+button {
+    background-color: #e74c3c; /* Bright red button */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+    transition: transform 0.1s ease, box-shadow 0.1s ease; /* Smooth transitions */
+    width: 28.5%;
+    text-overflow: hidden;
+}
+
+button:hover {
+    background-color: #c0392b; /* Darker red on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+}
+
+#characterSummary {
+    background-color: #34495e; /* Darker background */
+    padding: 25px;
+    margin-top: 30px;
+    border-radius: 10px;
+    color: #ecf0f1; /* Light text */
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.15); /* Shadow for summary box */
+}
+
+#copyButton {
+    background-color: #34495e; /* Bright red button */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+    transition: transform 0.1s ease, box-shadow 0.1s ease; /* Smooth transitions */
+    width: 28.5%;
+    text-overflow: hidden;
+    margin-top: 10px; /* Add some space above the button */
+}
+
+#copyButton:hover {
+    background-color: #c0392b; /* Darker red on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+}
+
+#copyButton.checked {
+    background-color: #2ecc71; /* Green color for "checked" state */
+}
+
+#copyButton.checked::after {
+    content: "✓"; /* Add a check mark */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+}
+/* Style for the labels above input fields */
+label {
+    display: inline-block; /* Align labels inline */
+    margin-right: 10px; /* Space between label and element */
+    color: #bdc3c7; /* Lighter label text */
+}
+
+/* Style for the group containers */
+.group-container {
+    border: 1px solid #34495e; /* Darker border */
+    background-color: #2c3e50; /* Dark background */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    color: #ecf0f1; /* Light text */
+}
+
+#summary,#oneLine,#Random {
+    width:auto;
+}
+/* Style for section headlines */
+.section-headline {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #e74c3c; /* Bright red section headline */
+}
+
+/* Style for the form row */
+.form-row {
+    display: flex; /* Use flexbox for row layout */
+    align-items: center; /* Vertical alignment */
+    justify-content: space-between; /* Distribute space evenly */
+    margin-bottom: 15px;
+}
+
+/* Style for the input, select, and button elements */
+.form-row input,
+.form-row select,
+.form-row button {
+    margin-right: 10px; /* Space between elements */
+}
+
+/* Style for the smaller "Add" button */
+.form-row .add-button {
+    padding: 6px 8px;
+    font-size: 12px;
+}
+
+/* Make the input field grow to fill available space */
+.form-row input {
+    flex-grow: 1; /* Allow input to grow */
+    width: 100%; /* Ensure input fills its container */
+}
+    </style>
+</head>
+<body>
+    <h1>Character Template Creator</h1>
+
+    <div class="group-container">
+        <h2>1. Character Description</h2>
+        <div class="section-headline">Name:</div>
+        <select id="name">
+            <option value="">Select Name</option>
+            <option value="Leo the Lightning Boy">Leo the Lightning Boy</option>
+            <option value="Zara the Flame Master">Zara the Flame Master</option>
+            <option value="Mira the Time Traveler">Mira the Time Traveler</option>
+            <option value="Blaze the Shadow Hunter">Blaze the Shadow Hunter</option>
+            <option value="Kai the Water Bender">Kai the Water Bender</option>
+            <option value="Orion the Sky Guardian">Orion the Sky Guardian</option>
+            <option value="Lyra the Celestial Warrior">Lyra the Celestial Warrior</option>
+            <option value="Atlas the Stone Giant">Atlas the Stone Giant</option>
+            <option value="Selene the Moon Whisperer">Selene the Moon Whisperer</option>
+        </select>
+        <input type="text" id="nameInput" placeholder="Add your own name...">
+        <button onclick="addNameOption()">Add Name</button>
+
+        <div class="section-headline">Age:</div>
+        <select id="age">
+            <option value="">Select Age</option>
+            <option value="6 years">6 years</option>
+            <option value="9 years">9 years</option>
+            <option value="15 years">15 years</option>
+            <option value="20 years">20 years</option>
+            <option value="25 years">25 years</option>
+            <option value="30 years">30 years</option>
+            <option value="45 years">45 years</option>
+            <option value="60 years">60 years</option>
+        </select>
+        <input type="text" id="ageInput" placeholder="Add your own age...">
+        <button onclick="addAgeOption()">Add Age</button>
+
+        <div class="section-headline">Physical Traits:</div>
+        <div class="section-headline">Gender:</div>
+        <select id="gender">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Androgynous">Androgynous</option>
+        </select>
+        <input type="text" id="genderInput" placeholder="Add your own gender...">
+        <button onclick="addGenderOption()">Add Gender</button>
+
+        <div class="section-headline">Hair Color:</div>
+        <select id="hairColor">
+            <option value="">Select Hair Color</option>
+            <option value="Black">Black</option>
+            <option value="Dark brown">Dark brown</option>
+            <option value="Golden blonde">Golden blonde</option>
+            <option value="Fiery red">Fiery red</option>
+            <option value="Sky blue">Sky blue</option>
+            <option value="White silver">White silver</option>
+            <option value="Gray">Gray</option>
+            <option value="Bright pink">Bright pink</option>
+            <option value="Deep purple">Deep purple</option>
+        </select>
+        <input type="text" id="hairColorInput" placeholder="Add your own hair color...">
+        <button onclick="addHairColorOption()">Add Hair Color</button>
+
+        <div class="section-headline">Hair Length & Style:</div>
+        <select id="hairStyle">
+            <option value="">Select Hair Length & Style</option>
+            <option value="Very short with a simple style">Very short with a simple style</option>
+            <option value="Medium length with slight waves">Medium length with slight waves</option>
+            <option value="Long and straight">Long and straight</option>
+            <option value="Long and curly">Long and curly</option>
+            <option value="Medium length tied up in a bun">Medium length tied up in a bun</option>
+            <option value="Short with shaved sides">Short with shaved sides</option>
+            <option value="Braided">Braided</option>
+            <option value="Shaggy and unkempt">Shaggy and unkempt</option>
+            <option value="Spiky and wild">Spiky and wild</option>
+        </select>
+        <input type="text" id="hairStyleInput" placeholder="Add your own hair style...">
+        <button onclick="addHairStyleOption()">Add Hair Style</button>
+
+        <div class="section-headline">Eye Color:</div>
+        <select id="eyeColor">
+            <option value="">Select Eye Color</option>
+            <option value="Brown">Brown</option>
+            <option value="Light blue">Light blue</option>
+            <option value="Dark blue">Dark blue</option>
+            <option value="Green-blue">Green-blue</option>
+            <option value="Violet">Violet</option>
+            <option value="Silver-gray">Silver-gray</option>
+            <option value="Amber">Amber</option>
+            <option value="Black">Black</option>
+            <option value="Emerald green">Emerald green</option>
+            <option value="Golden">Golden</option>
+        </select>
+        <input type="text" id="eyeColorInput" placeholder="Add your own eye color...">
+        <button onclick="addEyeColorOption()">Add Eye Color</button>
+
+        <div class="section-headline">Facial Features:</div>
+        <select id="facialFeatures">
+            <option value="">Select Facial Features</option>
+            <option value="Sharp and strong">Sharp and strong</option>
+            <option value="Round and soft">Round and soft</option>
+            <option value="Long with large eyes">Long with large eyes</option>
+            <option value="Oval with delicate details">Oval with delicate details</option>
+            <option value="High forehead and angular features">High forehead and angular features</option>
+            <option value="Freckled with a dimpled chin">Freckled with a dimpled chin</option>
+            <option value="Rugged with scars">Rugged with scars</option>
+            <option value="Youthful and smooth">Youthful and smooth</option>
+        </select>
+        <input type="text" id="facialFeaturesInput" placeholder="Add your own facial features...">
+        <button onclick="addFacialFeaturesOption()">Add Facial Features</button>
+
+        <div class="section-headline">Facial Expression:</div>
+        <select id="facialExpression">
+            <option value="">Select Facial Expression</option>
+            <option value="Serious">Serious</option>
+            <option value="Slightly smiling">Slightly smiling</option>
+            <option value="Angry">Angry</option>
+            <option value="Calm and focused">Calm and focused</option>
+            <option value="Energetic">Energetic</option>
+            <option value="Concerned">Concerned</option>
+            <option value="Challenging and ready">Challenging and ready</option>
+            <option value="Playful and mischievous">Playful and mischievous</option>
+            <option value="Stern and determined">Stern and determined</option>
+        </select>
+        <input type="text" id="facialExpressionInput" placeholder="Add your own facial expression...">
+        <button onclick="addFacialExpressionOption()">Add Facial Expression</button>
+
+        <div class="section-headline">Body Build:</div>
+        <select id="bodyBuild">
+            <option value="">Select Body Build</option>
+            <option value="Slim and strong">Slim and strong</option>
+            <option value="Average build with prominent muscles">Average build with prominent muscles</option>
+            <option value="Athletic and toned">Athletic and toned</option>
+            <option value="Tall and flexible">Tall and flexible</option>
+            <option value="Short but stocky">Short but stocky</option>
+            <option value="Heavy-set and muscular">Heavy-set and muscular</option>
+            <option value="Lean and wiry">Lean and wiry</option>
+            <option value="Petite and delicate">Petite and delicate</option>
+        </select>
+        <input type="text" id="bodyBuildInput" placeholder="Add your own body build...">
+        <button onclick="addBodyBuildOption()">Add Body Build</button>
+    </div>
+
+    <div class="group-container">
+        <h2>2. Clothing</h2>
+        <div class="section-headline">Type of Clothing:</div>
+        <select id="clothingType">
+            <option value="">Select Type of Clothing</option>
+            <option value="Traditional armor">Traditional armor</option>
+            <option value="Black ninja outfit">Black ninja outfit</option>
+            <option value="Adventurer's gear (leather jacket and sturdy pants)">Adventurer's gear (leather jacket and sturdy pants)</option>
+            <option value="Long cloak with a mask">Long cloak with a mask</option>
+            <option value="Modern sci-fi suit">Modern sci-fi suit</option>
+            <option value="Wizard's robe">Wizard's robe</option>
+            <option value="Classic anime-style combat outfit">Classic anime-style combat outfit</option>
+            <option value="Royal garb with a cape">Royal garb with a cape</option>
+            <option value="Space explorer's uniform">Space explorer's uniform</option>
+            <option value="Simple traveler’s outfit">Simple traveler’s outfit</option>
+        </select>
+        <input type="text" id="clothingTypeInput" placeholder="Add your own clothing type...">
+        <button onclick="addClothingTypeOption()">Add Clothing Type</button>
+
+        <div class="section-headline">Color of Clothing & Accessories:</div>
+        <select id="clothingColor">
+            <option value="">Select Color of Clothing & Accessories</option>
+            <option value="Red cloak with silver armor">Red cloak with silver armor</option>
+            <option value="All-black outfit with a red belt">All-black outfit with a red belt</option>
+            <option value="Dark blue suit with black boots">Dark blue suit with black boots</option>
+            <option value="White robe with gold details">White robe with gold details</option>
+            <option value="Green combat suit with leather gloves">Green combat suit with leather gloves</option>
+            <option value="Purple robe with a staff">Purple robe with a staff</option>
+            <option value="Silver suit with glowing blue stripes">Silver suit with glowing blue stripes</option>
+            <option value="Gold-trimmed armor with deep red cape">Gold-trimmed armor with deep red cape</option>
+            <option value="Blue and silver robe with intricate designs">Blue and silver robe with intricate designs</option>
+            <option value="Stealthy gray outfit with black accents">Stealthy gray outfit with black accents</option>
+        </select>
+        <input type="text" id="clothingColorInput" placeholder="Add your own clothing color...">
+        <button onclick="addClothingColorOption()">Add Clothing Color</button>
+
+        <div class="section-headline">Accessories:</div>
+        <select id="accessories">
+            <option value="">Select Accessories</option>
+            <option value="Sword">Sword</option>
+            <option value="Magic staff">Magic staff</option>
+            <option value="Glowing pendant">Glowing pendant</option>
+            <option value="Bow and arrows">Bow and arrows</option>
+            <option value="Backpack with tools">Backpack with tools</option>
+            <option value="Dual daggers">Dual daggers</option>
+            <option value="Face mask or helmet">Face mask or helmet</option>
+            <option value="Shield with enchanted markings">Shield with enchanted markings</option>
+            <option value="Potion belt with vials">Potion belt with vials</option>
+            <option value="Hand-held scanner or futuristic device">Hand-held scanner or futuristic device</option>
+        </select>
+        <input type="text" id="accessoriesInput" placeholder="Add your own accessories...">
+        <button onclick="addAccessoriesOption()">Add Accessories</button>
+
+        <div class="section-headline">Special Abilities:</div>
+        <select id="specialAbilities">
+            <option value="">Select Special Abilities</option>
+            <option value="Lightning control from fingers">Lightning control from fingers</option>
+            <option value="Fire manipulation">Fire manipulation</option>
+            <option value="Time manipulation">Time manipulation</option>
+            <option value="Dimensional jumping">Dimensional jumping</option>
+            <option value="Summoning magical creatures">Summoning magical creatures</option>
+            <option value="Flying without wings">Flying without wings</option>
+            <option value="Water control and shaping">Water control and shaping</option>
+            <option value="Invisibility">Invisibility</option>
+            <option value="Telekinesis">Telekinesis</option>
+            <option value="Shape-shifting">Shape-shifting</option>
+        </select>
+        <input type="text" id="specialAbilitiesInput" placeholder="Add your own special abilities...">
+        <button onclick="addSpecialAbilitiesOption()">Add Special Abilities</button>
+    </div>
+
+    <div class="group-container">
+        <h2>3. Scene Description</h2>
+        <div class="section-headline">Location:</div>
+        <select id="location">
+            <option value="">Select Location</option>
+            <option value="Mountain peak during a storm">Mountain peak during a storm</option>
+            <option value="Magical forest with giant trees">Magical forest with giant trees</option>
+            <option value="Futuristic neon-lit city">Futuristic neon-lit city</option>
+            <option value="Fiery battlefield">Fiery battlefield</option>
+            <option value="Ancient deserted town">Ancient deserted town</option>
+            <option value="Underground cave filled with crystals">Underground cave filled with crystals</option>
+            <option value="Spaceship traveling through space">Spaceship traveling through space</option>
+            <option value="Castle ruins by the sea">Castle ruins by the sea</option>
+            <option value="Hidden temple in a jungle">Hidden temple in a jungle</option>
+            <option value="Floating islands in the sky">Floating islands in the sky</option>
+        </select>
+        <input type="text" id="locationInput" placeholder="Add your own location...">
+        <button onclick="addLocationOption()">Add Location</button>
+
+        <div class="section-headline">Time:</div>
+        <select id="time">
+            <option value="">Select Time</option>
+            <option value="Bright morning">Bright morning</option>
+            <option value="Midnight">Midnight</option>
+            <option value="Sunset">Sunset</option>
+            <option value="Early dawn">Early dawn</option>
+            <option value="Cloudy afternoon">Cloudy afternoon</option>
+            <option value="During a solar eclipse">During a solar eclipse</option>
+            <option value="In the middle of a storm">In the middle of a storm</option>
+            <option value="Twilight hour">Twilight hour</option>
+        </select>
+        <input type="text" id="timeInput" placeholder="Add your own time...">
+        <button onclick="addTimeOption()">Add Time</button>
+
+        <div class="section-headline">Weather/Environment:</div>
+        <select id="weather">
+            <option value="">Select Weather/Environment</option>
+            <option value="Sunny with a blue sky">Sunny with a blue sky</option>
+            <option value="Thunderstorm with constant lightning">Thunderstorm with constant lightning</option>
+            <option value="Light rain with a rainbow">Light rain with a rainbow</option>
+            <option value="Thick clouds and fog">Thick clouds and fog</option>
+            <option value="Heavy snowfall covering everything">Heavy snowfall covering everything</option>
+            <option value="Hot desert with strong winds">Hot desert with strong winds</option>
+            <option value="Inside an erupting volcano">Inside an erupting volcano</option>
+            <option value="Icy tundra with blizzards">Icy tundra with blizzards</option>
+            <option value="Misty forest with glowing lights">Misty forest with glowing lights</option>
+            <option value="Underwater ocean depths">Underwater ocean depths</option>
+        </select>
+        <input type="text" id="weatherInput" placeholder="Add your own weather...">
+        <button onclick="addWeatherOption()">Add Weather</button>
+
+        <div class="section-headline">Actions:</div>
+        <select id="actions">
+            <option value="">Select Actions</option>
+            <option value="Character fighting a fierce enemy">Character fighting a fierce enemy</option>
+            <option value="Standing firm and gazing at the horizon">Standing firm and gazing at the horizon</option>
+            <option value="Running fast, escaping danger">Running fast, escaping danger</option>
+            <option value="Jumping between tall buildings">Jumping between tall buildings</option>
+            <option value="Holding a weapon, ready for battle">Holding a weapon, ready for battle</option>
+            <option value="Helping a friend or ally">Helping a friend or ally</option>
+            <option value="Meditating and observing the surroundings">Meditating and observing the surroundings</option>
+            <option value="Facing an oncoming army">Facing an oncoming army</option>
+            <option value="Searching through ruins">Searching through ruins</option>
+            <option value="Climbing a steep cliffside">Climbing a steep cliffside</option>
+        </select>
+        <input type="text" id="actionsInput" placeholder="Add your own actions...">
+        <button onclick="addActionsOption()">Add Actions</button>
+
+        <div class="section-headline">Additional Elements in the Scene:</div>
+        <select id="additionalElements">
+            <option value="">Select Additional Elements in the Scene</option>
+            <option value="Giant evil enemy">Giant evil enemy</option>
+            <option value="Magical creatures">Magical creatures</option>
+            <option value="A team of friends standing by">A team of friends standing by</option>
+            <option value="Mythical creature like a dragon or monster">Mythical creature like a dragon or monster</option>
+            <option value="Ancient ruins or destroyed buildings">Ancient ruins or destroyed buildings</option>
+            <option value="Spaceships flying in the sky">Spaceships flying in the sky</option>
+            <option value="Crowds of soldiers or creatures">Crowds of soldiers or creatures</option>
+            <option value="A portal to another dimension">A portal to another dimension</option>
+            <option value="Floating islands and ancient structures">Floating islands and ancient structures</option>
+            <option value="Powerful spell or explosion in the background">Powerful spell or explosion in the background</option>
+        </select>
+        <input type="text" id="additionalElementsInput" placeholder="Add your own additional elements...">
+        <button onclick="addAdditionalElementsOption()">Add Additional Elements</button>
+    </div>
+
+    <div class="group-container">
+        <h2>4. Artistic Style</h2>
+        <div class="section-headline">Art Style:</div>
+        <select id="artStyle">
+            <option value="">Select Art Style</option>
+            <option value="Classic anime style">Classic anime style</option>
+            <option value="Colorful and vibrant cartoon">Colorful and vibrant cartoon</option>
+            <option value="Semi-realistic with detailed features">Semi-realistic with detailed features</option>
+            <option value="Highly realistic">Highly realistic</option>
+            <option value="Abstract art">Abstract art</option>
+            <option value="Sci-fi inspired">Sci-fi inspired</option>
+            <option value="Manga style in black and white">Manga style in black and white</option>
+            <option value="Graphic novel style with sharp contrasts">Graphic novel style with sharp contrasts</option>
+            <option value="Fantasy concept art with rich textures">Fantasy concept art with rich textures</option>
+<!-- 3D and Popular Art Styles -->
+    <optgroup label="3D and Popular Art Styles">
+        <option value="3D Pixar style">3D Pixar style</option>
+        <option value="Mixed Anime and 3D Pixar">Mixed Anime and 3D Pixar</option>
+        <option value="Fantasy with 3D rendering">Fantasy with 3D rendering</option>
+        <option value="Realism with stylized textures">Realism with stylized textures</option>
+        <option value="Mixed 2D and 3D">Mixed 2D and 3D</option>
+    </optgroup>
+
+    <!-- Classic and Traditional Art Styles -->
+    <optgroup label="Classic and Traditional Art Styles">
+        <option value="Classic anime style">Classic anime style</option>
+        <option value="Manga style in black and white">Manga style in black and white</option>
+        <option value="Fantasy concept art with rich textures">Fantasy concept art with rich textures</option>
+        <option value="Highly realistic">Highly realistic</option>
+        <option value="Semi-realistic with detailed features">Semi-realistic with detailed features</option>
+        <option value="Graphic novel style with sharp contrasts">Graphic novel style with sharp contrasts</option>
+    </optgroup>
+
+    <!-- Abstract and Conceptual Art Styles -->
+    <optgroup label="Abstract and Conceptual Art Styles">
+        <option value="Abstract art">Abstract art</option>
+        <option value="Conceptual art with mixed media">Conceptual art with mixed media</option>
+        <option value="Symbolism mixed with realism">Symbolism mixed with realism</option>
+        <option value="Surrealism">Surrealism</option>
+    </optgroup>
+
+    <!-- Cartoon and Vibrant Art Styles -->
+    <optgroup label="Cartoon and Vibrant Art Styles">
+        <option value="Colorful and vibrant cartoon">Colorful and vibrant cartoon</option>
+        <option value="Anime with watercolor effects">Anime with watercolor effects</option>
+        <option value="Flat design mixed with realism">Flat design mixed with realism</option>
+        <option value="Kawaii with 3D elements">Kawaii with 3D elements</option>
+    </optgroup>
+
+    <!-- Futuristic and Sci-Fi Art Styles -->
+    <optgroup label="Futuristic and Sci-Fi Art Styles">
+        <option value="Sci-fi inspired">Sci-fi inspired</option>
+        <option value="Cyberpunk">Cyberpunk</option>
+        <option value="Steampunk">Steampunk</option>
+        <option value="Futurism with hyperrealistic lighting">Futurism with hyperrealistic lighting</option>
+        <option value="Fantasy concept art mixed with Sci-fi elements">Fantasy concept art mixed with Sci-fi elements</option>
+    </optgroup>
+
+    <!-- Historical and Retro Art Styles -->
+    <optgroup label="Historical and Retro Art Styles">
+        <option value="Art Deco">Art Deco</option>
+        <option value="Vintage/Retro style">Vintage/Retro style</option>
+        <option value="Baroque with modern textures">Baroque with modern textures</option>
+        <option value="Neo-Impressionism (Pointillism)">Neo-Impressionism (Pointillism)</option>
+        <option value="Pop Art">Pop Art</option>
+        <option value="Cubism">Cubism</option>
+    </optgroup>
+
+    <!-- Digital and Low-Poly Art Styles -->
+    <optgroup label="Digital and Low-Poly Art Styles">
+        <option value="Low poly 3D">Low poly 3D</option>
+        <option value="Pixel art">Pixel art</option>
+        <option value="Pixel sorting (glitch art)">Pixel sorting (glitch art)</option>
+        <option value="Typography art">Typography art</option>
+        <option value="Graffiti with neon accents">Graffiti with neon accents</option>
+    </optgroup>
+
+    <!-- Minimalist and Simplified Art Styles -->
+    <optgroup label="Minimalist and Simplified Art Styles">
+        <option value="Line art">Line art</option>
+        <option value="Minimalism">Minimalism</option>
+        <option value="Street art/Graffiti">Street art/Graffiti</option>
+        <option value="Collage style">Collage style</option>
+        <option value="Lowbrow art">Lowbrow art</option>
+    </optgroup>
+        </select>
+        <input type="text" id="artStyleInput" placeholder="Add your own art style...">
+        <button onclick="addArtStyleOption()">Add Art Style</button>
+
+        <div class="section-headline">Color Focus:</div>
+        <select id="colorFocus">
+            <option value="">Select Color Focus</option>
+            <option value="Bright and bold colors">Bright and bold colors</option>
+            <option value="Dark and muted tones">Dark and muted tones</option>
+            <option value="Monochrome (black and white)">Monochrome (black and white)</option>
+            <option value="Soft pastel gradients">Soft pastel gradients</option>
+            <option value="Fiery colors (red, orange)">Fiery colors (red, orange)</option>
+            <option value="Cool tones (blue, green)">Cool tones (blue, green)</option>
+            <option value="Metallic, shiny hues">Metallic, shiny hues</option>
+            <option value="Earthy tones (brown, green)">Earthy tones (brown, green)</option>
+            <option value="Neon colors">Neon colors</option>
+            <option value="Warm sunset hues">Warm sunset hues</option>
+<!-- 3D and Popular Color Styles -->
+    <optgroup label="3D and Popular Color Styles">
+        <option value="3D Pixar palette (vibrant and clean colors)">3D Pixar palette (vibrant and clean colors)</option>
+        <option value="Sci-fi neon with metallic hues">Sci-fi neon with metallic hues</option>
+        <option value="Fantasy with glowing colors">Fantasy with glowing colors</option>
+        <option value="Neon gradient">Neon gradient</option>
+        <option value="Holographic colors">Holographic colors</option>
+        <option value="RGB split effect">RGB split effect</option>
+        <option value="Glitch art with color distortion">Glitch art with color distortion</option>
+        <option value="Pop Art with bold primary colors">Pop Art with bold primary colors</option>
+    </optgroup>
+
+    <!-- Highly Popular & Versatile Color Palettes -->
+    <optgroup label="Highly Popular & Versatile Color Palettes">
+        <option value="Cinematic color grading">Cinematic color grading</option>
+        <option value="Colorful and vibrant palette">Colorful and vibrant palette</option>
+        <option value="Neon colors and bright lights">Neon colors and bright lights</option>
+        <option value="Muted and desaturated tones">Muted and desaturated tones</option>
+        <option value="Pastel colors">Pastel colors</option>
+        <option value="Sepia tone">Sepia tone</option>
+        <option value="Warm colors focus (reds, oranges, yellows)">Warm colors focus (reds, oranges, yellows)</option>
+        <option value="Cool colors focus (blues, greens, purples)">Cool colors focus (blues, greens, purples)</option>
+    </optgroup>
+
+    <!-- Advanced Color Techniques & Mixed Palettes -->
+    <optgroup label="Advanced Color Techniques & Mixed Palettes">
+        <option value="Complementary color scheme">Complementary color scheme</option>
+        <option value="Analogous color scheme">Analogous color scheme</option>
+        <option value="Triadic color scheme">Triadic color scheme</option>
+        <option value="Hyper-saturated colors">Hyper-saturated colors</option>
+        <option value="Muted colors with bright accents">Muted colors with bright accents</option>
+        <option value="Flat colors with deep shadows">Flat colors with deep shadows</option>
+        <option value="Gradient with bold contrast">Gradient with bold contrast</option>
+    </optgroup>
+
+    <!-- Specialized and Creative Effects -->
+    <optgroup label="Specialized and Creative Effects">
+        <option value="Color pop (selective color focus)">Color pop (selective color focus)</option>
+        <option value="Vintage film color effects">Vintage film color effects</option>
+        <option value="Iridescent effect">Iridescent effect</option>
+        <option value="Soft light and faded colors">Soft light and faded colors</option>
+        <option value="Color bleed effects">Color bleed effects</option>
+        <option value="Dual-tone (two-color focus)">Dual-tone (two-color focus)</option>
+        <option value="Overexposed lighting with soft colors">Overexposed lighting with soft colors</option>
+        <option value="Dark and moody color palette">Dark and moody color palette</option>
+    </optgroup>
+
+    <!-- Nature-Inspired Color Schemes -->
+    <optgroup label="Nature-Inspired Color Schemes">
+        <option value="Oceanic blue palette">Oceanic blue palette</option>
+        <option value="Forest green palette">Forest green palette</option>
+        <option value="Sunset tones">Sunset tones</option>
+        <option value="Tropical color scheme">Tropical color scheme</option>
+        <option value="Desert warm hues">Desert warm hues</option>
+        <option value="Winter cold hues">Winter cold hues</option>
+    </optgroup>
+
+    <!-- Retro & Nostalgic Color Styles -->
+    <optgroup label="Retro & Nostalgic Color Styles">
+        <option value="Vaporwave palette (purple, pink, cyan)">Vaporwave palette (purple, pink, cyan)</option>
+        <option value="Retro color scheme">Retro color scheme</option>
+    </optgroup>
+
+    <!-- Basic & Minimalist Styles -->
+    <optgroup label="Basic & Minimalist Styles">
+        <option value="Monochrome">Monochrome</option>
+        <option value="Black and white with high contrast">Black and white with high contrast</option>
+        <option value="Earth tones">Earth tones</option>
+    </optgroup>
+        </select>
+        <input type="text" id="colorFocusInput" placeholder="Add your own color focus...">
+        <button onclick="addColorFocusOption()">Add Color Focus</button>
+
+        <div class="section-headline">Character Consistency Level:</div>
+        <select id="consistencyLevel">
+            <option value="">Select Consistency Level</option>
+            <option value="Low (creative freedom with appearance)">Low (creative freedom with appearance)</option>
+            <option value="Mid (mostly consistent)">Mid (mostly consistent)</option>
+            <option value="High (very consistent appearance)">High (very consistent appearance)</option>
+        </select>
+        <input type="text" id="consistencyLevelInput" placeholder="Add your own consistency level...">
+        <button onclick="addConsistencyLevelOption()">Add Consistency Level</button>
+    </div>
+
+    <button id="summary" onclick="generateSummary()">Generate Character Summary</button>
+    <button id="oneLine" onclick="generateOneLinePrompt()">Generate One-Line Prompt</button>
+    <button  id="Random"  onclick="chooseRandom()">Choose Random</button>
+    <button id="copyButton" onclick="copyText()">Copy to Clipboard</button>
+    <div id="characterSummary" contenteditable="true"></div>
+     <script>
+function addNameOption() {
+    const nameInput = document.getElementById('nameInput').value;
+    const nameSelect = document.getElementById('name');
+    const newOption = document.createElement('option');
+    newOption.value = nameInput;
+    newOption.text = nameInput;
+    nameSelect.add(newOption);
+    document.getElementById('nameInput').value = ''; // Clear the input field
+}
+
+function addAgeOption() {
+    const ageInput = document.getElementById('ageInput').value;
+    const ageSelect = document.getElementById('age');
+    const newOption = document.createElement('option');
+    newOption.value = ageInput;
+    newOption.text = ageInput;
+    ageSelect.add(newOption);
+    document.getElementById('ageInput').value = ''; // Clear the input field
+}
+
+function addGenderOption() {
+    const genderInput = document.getElementById('genderInput').value;
+    const genderSelect = document.getElementById('gender');
+    const newOption = document.createElement('option');
+    newOption.value = genderInput;
+    newOption.text = genderInput;
+    genderSelect.add(newOption);
+    document.getElementById('genderInput').value = ''; // Clear the input field
+}
+
+function addHairColorOption() {
+    const hairColorInput = document.getElementById('hairColorInput').value;
+    const hairColorSelect = document.getElementById('hairColor');
+    const newOption = document.createElement('option');
+    newOption.value = hairColorInput;
+    newOption.text = hairColorInput;
+    hairColorSelect.add(newOption);
+    document.getElementById('hairColorInput').value = ''; // Clear the input field
+}
+
+function addHairStyleOption() {
+    const hairStyleInput = document.getElementById('hairStyleInput').value;
+    const hairStyleSelect = document.getElementById('hairStyle');
+    const newOption = document.createElement('option');
+    newOption.value = hairStyleInput;
+    newOption.text = hairStyleInput;
+    hairStyleSelect.add(newOption);
+    document.getElementById('hairStyleInput').value = ''; // Clear the input field
+}
+
+function addEyeColorOption() {
+    const eyeColorInput = document.getElementById('eyeColorInput').value;
+    const eyeColorSelect = document.getElementById('eyeColor');
+    const newOption = document.createElement('option');
+    newOption.value = eyeColorInput;
+    newOption.text = eyeColorInput;
+    eyeColorSelect.add(newOption);
+    document.getElementById('eyeColorInput').value = ''; // Clear the input field
+}
+
+function addFacialFeaturesOption() {
+    const facialFeaturesInput = document.getElementById('facialFeaturesInput').value;
+    const facialFeaturesSelect = document.getElementById('facialFeatures');
+    const newOption = document.createElement('option');
+    newOption.value = facialFeaturesInput;
+    newOption.text = facialFeaturesInput;
+    facialFeaturesSelect.add(newOption);
+    document.getElementById('facialFeaturesInput').value = ''; // Clear the input field
+}
+
+function addFacialExpressionOption() {
+    const facialExpressionInput = document.getElementById('facialExpressionInput').value;
+    const facialExpressionSelect = document.getElementById('facialExpression');
+    const newOption = document.createElement('option');
+    newOption.value = facialExpressionInput;
+    newOption.text = facialExpressionInput;
+    facialExpressionSelect.add(newOption);
+    document.getElementById('facialExpressionInput').value = ''; // Clear the input field
+}
+
+function addBodyBuildOption() {
+    const bodyBuildInput = document.getElementById('bodyBuildInput').value;
+    const bodyBuildSelect = document.getElementById('bodyBuild');
+    const newOption = document.createElement('option');
+    newOption.value = bodyBuildInput;
+    newOption.text = bodyBuildInput;
+    bodyBuildSelect.add(newOption);
+    document.getElementById('bodyBuildInput').value = ''; // Clear the input field
+}
+
+function addClothingTypeOption() {
+    const clothingTypeInput = document.getElementById('clothingTypeInput').value;
+    const clothingTypeSelect = document.getElementById('clothingType');
+    const newOption = document.createElement('option');
+    newOption.value = clothingTypeInput;
+    newOption.text = clothingTypeInput;
+    clothingTypeSelect.add(newOption);
+    document.getElementById('clothingTypeInput').value = ''; // Clear the input field
+}
+
+function addClothingColorOption() {
+    const clothingColorInput = document.getElementById('clothingColorInput').value;
+    const clothingColorSelect = document.getElementById('clothingColor');
+    const newOption = document.createElement('option');
+    newOption.value = clothingColorInput;
+    newOption.text = clothingColorInput;
+    clothingColorSelect.add(newOption);
+    document.getElementById('clothingColorInput').value = ''; // Clear the input field
+}
+
+function addAccessoriesOption() {
+    const accessoriesInput = document.getElementById('accessoriesInput').value;
+    const accessoriesSelect = document.getElementById('accessories');
+    const newOption = document.createElement('option');
+    newOption.value = accessoriesInput;
+    newOption.text = accessoriesInput;
+    accessoriesSelect.add(newOption);
+    document.getElementById('accessoriesInput').value = ''; // Clear the input field
+}
+
+function addSpecialAbilitiesOption() {
+    const specialAbilitiesInput = document.getElementById('specialAbilitiesInput').value;
+    const specialAbilitiesSelect = document.getElementById('specialAbilities');
+    const newOption = document.createElement('option');
+    newOption.value = specialAbilitiesInput;
+    newOption.text = specialAbilitiesInput;
+    specialAbilitiesSelect.add(newOption);
+    document.getElementById('specialAbilitiesInput').value = ''; // Clear the input field
+}
+
+function addLocationOption() {
+    const locationInput = document.getElementById('locationInput').value;
+    const locationSelect = document.getElementById('location');
+    const newOption = document.createElement('option');
+    newOption.value = locationInput;
+    newOption.text = locationInput;
+    locationSelect.add(newOption);
+    document.getElementById('locationInput').value = ''; // Clear the input field
+}
+
+function addTimeOption() {
+    const timeInput = document.getElementById('timeInput').value;
+    const timeSelect = document.getElementById('time');
+    const newOption = document.createElement('option');
+    newOption.value = timeInput;
+    newOption.text = timeInput;
+    timeSelect.add(newOption);
+    document.getElementById('timeInput').value = ''; // Clear the input field
+}
+
+function addWeatherOption() {
+    const weatherInput = document.getElementById('weatherInput').value;
+    const weatherSelect = document.getElementById('weather');
+    const newOption = document.createElement('option');
+    newOption.value = weatherInput;
+    newOption.text = weatherInput;
+    weatherSelect.add(newOption);
+    document.getElementById('weatherInput').value = ''; // Clear the input field
+}
+
+function addActionsOption() {
+    const actionsInput = document.getElementById('actionsInput').value;
+    const actionsSelect = document.getElementById('actions');
+    const newOption = document.createElement('option');
+    newOption.value = actionsInput;
+    newOption.text = actionsInput;
+    actionsSelect.add(newOption);
+    document.getElementById('actionsInput').value = ''; // Clear the input field
+}
+
+function addAdditionalElementsOption() {
+    const additionalElementsInput = document.getElementById('additionalElementsInput').value;
+    const additionalElementsSelect = document.getElementById('additionalElements');
+    const newOption = document.createElement('option');
+    newOption.value = additionalElementsInput;
+    newOption.text = additionalElementsInput;
+    additionalElementsSelect.add(newOption);
+    document.getElementById('additionalElementsInput').value = ''; // Clear the input field
+}
+
+function addArtStyleOption() {
+    const artStyleInput = document.getElementById('artStyleInput').value;
+    const artStyleSelect = document.getElementById('artStyle');
+    const newOption = document.createElement('option');
+    newOption.value = artStyleInput;
+    newOption.text = artStyleInput;
+    artStyleSelect.add(newOption);
+    document.getElementById('artStyleInput').value = ''; // Clear the input field
+}
+
+function addColorFocusOption() {
+    const colorFocusInput = document.getElementById('colorFocusInput').value;
+    const colorFocusSelect = document.getElementById('colorFocus');
+    const newOption = document.createElement('option');
+    newOption.value = colorFocusInput;
+    newOption.text = colorFocusInput;
+    colorFocusSelect.add(newOption);
+    document.getElementById('colorFocusInput').value = ''; // Clear the input field
+}
+
+function addConsistencyLevelOption() {
+    const consistencyLevelInput = document.getElementById('consistencyLevelInput').value;
+    const consistencyLevelSelect = document.getElementById('consistencyLevel');
+    const newOption = document.createElement('option');
+    newOption.value = consistencyLevelInput;
+    newOption.text = consistencyLevelInput;
+    consistencyLevelSelect.add(newOption);
+    document.getElementById('consistencyLevelInput').value = ''; // Clear the input field
+}
+
+function generateSummary() {
+    const name = document.getElementById('name').value;
+    const age = document.getElementById('age').value;
+    const gender = document.getElementById('gender').value;
+    const hairColor = document.getElementById('hairColor').value;
+    const hairStyle = document.getElementById('hairStyle').value;
+    const eyeColor = document.getElementById('eyeColor').value;
+    const facialFeatures = document.getElementById('facialFeatures').value;
+    const facialExpression = document.getElementById('facialExpression').value;
+    const bodyBuild = document.getElementById('bodyBuild').value;
+    const clothingType = document.getElementById('clothingType').value;
+    const clothingColor = document.getElementById('clothingColor').value;
+    const accessories = document.getElementById('accessories').value;
+    const specialAbilities = document.getElementById('specialAbilities').value;
+    const location = document.getElementById('location').value;
+    const time = document.getElementById('time').value;
+    const weather = document.getElementById('weather').value;
+    const actions = document.getElementById('actions').value;
+    const additionalElements = document.getElementById('additionalElements').value;
+    const artStyle = document.getElementById('artStyle').value;
+    const colorFocus = document.getElementById('colorFocus').value;
+    const consistencyLevel = document.getElementById('consistencyLevel').value;
+
+    const summary = `
+        <h2>Character Summary</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Age:</strong> ${age}</p>
+        <p><strong>Gender:</strong> ${gender}</p>
+        <p><strong>Hair Color:</strong> ${hairColor}</p>
+        <p><strong>Hair Length & Style:</strong> ${hairStyle}</p>
+        <p><strong>Eye Color:</strong> ${eyeColor}</p>
+        <p><strong>Facial Features:</strong> ${facialFeatures}</p>
+        <p><strong>Facial Expression:</strong> ${facialExpression}</p>
+        <p><strong>Body Build:</strong> ${bodyBuild}</p>
+        <p><strong>Clothing Type:</strong> ${clothingType}</p>
+        <p><strong>Color of Clothing & Accessories:</strong> ${clothingColor}</p>
+        <p><strong>Accessories:</strong> ${accessories}</p>
+        <p><strong>Special Abilities:</strong> ${specialAbilities}</p>
+        <p><strong>Location:</strong> ${location}</p>
+        <p><strong>Time:</strong> ${time}</p>
+        <p><strong>Weather/Environment:</strong> ${weather}</p>
+        <p><strong>Actions:</strong> ${actions}</p>
+        <p><strong>Additional Elements in the Scene:</strong> ${additionalElements}</p>
+        <p><strong>Art Style:</strong> ${artStyle}</p>
+        <p><strong>Color Focus:</strong> ${colorFocus}</p>
+        <p><strong>Character Consistency Level:</strong> ${consistencyLevel}</p>
+    `;
+
+    document.getElementById('characterSummary').innerHTML = summary;
+}
+
+function generateOneLinePrompt() {
+    let prompt = "";
+
+    // Name (without "Name:")
+    if (document.getElementById('name').value) {
+        prompt += `${document.getElementById('name').value}, `;
+    }
+
+    // Age (as a number plus " years old")
+    if (document.getElementById('age').value) {
+        const ageValue = parseInt(document.getElementById('age').value); // Try to parse as number
+        if (!isNaN(ageValue)) { // Check if it's a valid number
+            prompt += `${ageValue} years old, `;
+        } else {
+            prompt += `${document.getElementById('age').value}, `; // If not a number, use the original text
+        }
+    }
+
+    // Hair Properties
+    if (document.getElementById('hairColor').value) {
+        prompt += `${document.getElementById('hairColor').value}, `;
+    }
+    if (document.getElementById('hairStyle').value) {
+        prompt += `${document.getElementById('hairStyle').value} Hair, `;
+    }
+
+    // Eye Properties
+    if (document.getElementById('eyeColor').value) {
+        prompt += `${document.getElementById('eyeColor').value} Eyes, `;
+    }
+
+    // Facial Properties
+    if (document.getElementById('facialFeatures').value) {
+        prompt += `${document.getElementById('facialFeatures').value}, `;
+    }
+    if (document.getElementById('facialExpression').value) {
+        prompt += `${document.getElementById('facialExpression').value} Expression, `;
+    }
+
+    // Body Properties
+    if (document.getElementById('bodyBuild').value) {
+        prompt += `${document.getElementById('bodyBuild').value}, `;
+    }
+
+    // Clothing Properties
+    if (document.getElementById('clothingType').value) {
+        prompt += `${document.getElementById('clothingType').value}, `;
+    }
+    if (document.getElementById('clothingColor').value) {
+        prompt += `${document.getElementById('clothingColor').value} Clothes, `;
+    }
+
+    // Accessories
+    if (document.getElementById('accessories').value) {
+        prompt += `${document.getElementById('accessories').value}, `;
+    }
+
+    // Special Abilities
+    if (document.getElementById('specialAbilities').value) {
+        prompt += `${document.getElementById('specialAbilities').value}, `;
+    }
+
+    // Location Properties
+    if (document.getElementById('location').value) {
+        prompt += `${document.getElementById('location').value}, `;
+    }
+
+    // Time Properties
+    if (document.getElementById('time').value) {
+        prompt += `${document.getElementById('time').value}, `;
+    }
+
+    // Weather Properties
+    if (document.getElementById('weather').value) {
+        prompt += `${document.getElementById('weather').value}, `;
+    }
+
+    // Actions
+    if (document.getElementById('actions').value) {
+        prompt += `${document.getElementById('actions').value}, `;
+    }
+
+    // Additional Elements
+    if (document.getElementById('additionalElements').value) {
+        prompt += `${document.getElementById('additionalElements').value}, `;
+    }
+
+    // Art Style Properties
+    if (document.getElementById('artStyle').value) {
+        prompt += `${document.getElementById('artStyle').value}, `;
+    }
+    if (document.getElementById('colorFocus').value) {
+        prompt += `${document.getElementById('colorFocus').value} Colors, `;
+    }
+
+    // Remove the trailing comma and space if any
+    if (prompt.endsWith(", ")) {
+        prompt = prompt.slice(0, -2); 
+    }
+
+    document.getElementById('characterSummary').innerHTML = `<h3>One-Line Prompt</h3><p>${prompt}</p>`;
+}
+
+function chooseRandom() {
+    function getRandomIndex(selectElement) {
+        return Math.floor(Math.random() * selectElement.options.length);
+    }
+
+    const nameSelect = document.getElementById('name');
+    nameSelect.selectedIndex = getRandomIndex(nameSelect);
+
+    const ageSelect = document.getElementById('age');
+    ageSelect.selectedIndex = getRandomIndex(ageSelect);
+
+    const genderSelect = document.getElementById('gender');
+    genderSelect.selectedIndex = getRandomIndex(genderSelect);
+
+    const hairColorSelect = document.getElementById('hairColor');
+    hairColorSelect.selectedIndex = getRandomIndex(hairColorSelect);
+
+    const hairStyleSelect = document.getElementById('hairStyle');
+    hairStyleSelect.selectedIndex = getRandomIndex(hairStyleSelect);
+
+    const eyeColorSelect = document.getElementById('eyeColor');
+    eyeColorSelect.selectedIndex = getRandomIndex(eyeColorSelect);
+
+    const facialFeaturesSelect = document.getElementById('facialFeatures');
+    facialFeaturesSelect.selectedIndex = getRandomIndex(facialFeaturesSelect);
+
+    const facialExpressionSelect = document.getElementById('facialExpression');
+    facialExpressionSelect.selectedIndex = getRandomIndex(facialExpressionSelect);
+
+    const bodyBuildSelect = document.getElementById('bodyBuild');
+    bodyBuildSelect.selectedIndex = getRandomIndex(bodyBuildSelect);
+
+    const clothingTypeSelect = document.getElementById('clothingType');
+    clothingTypeSelect.selectedIndex = getRandomIndex(clothingTypeSelect);
+
+    const clothingColorSelect = document.getElementById('clothingColor');
+    clothingColorSelect.selectedIndex = getRandomIndex(clothingColorSelect);
+
+    const accessoriesSelect = document.getElementById('accessories');
+    accessoriesSelect.selectedIndex = getRandomIndex(accessoriesSelect);
+
+    const specialAbilitiesSelect = document.getElementById('specialAbilities');
+    specialAbilitiesSelect.selectedIndex = getRandomIndex(specialAbilitiesSelect);
+
+    const locationSelect = document.getElementById('location');
+    locationSelect.selectedIndex = getRandomIndex(locationSelect);
+
+    const timeSelect = document.getElementById('time');
+    timeSelect.selectedIndex = getRandomIndex(timeSelect);
+
+    const weatherSelect = document.getElementById('weather');
+    weatherSelect.selectedIndex = getRandomIndex(weatherSelect);
+
+    const actionsSelect = document.getElementById('actions');
+    actionsSelect.selectedIndex = getRandomIndex(actionsSelect);
+
+    const additionalElementsSelect = document.getElementById('additionalElements');
+    additionalElementsSelect.selectedIndex = getRandomIndex(additionalElementsSelect);
+
+    const artStyleSelect = document.getElementById('artStyle');
+    artStyleSelect.selectedIndex = getRandomIndex(artStyleSelect);
+
+    const colorFocusSelect = document.getElementById('colorFocus');
+    colorFocusSelect.selectedIndex = getRandomIndex(colorFocusSelect);
+
+    const consistencyLevelSelect = document.getElementById('consistencyLevel');
+    consistencyLevelSelect.selectedIndex = getRandomIndex(consistencyLevelSelect);
+
+    generateSummary();
+}
+
+function copyText() {
+  const summaryText = document.getElementById('characterSummary');
+  const range = document.createRange();
+
+  // Find the first h3 element (which contains "One-Line Prompt")
+  const oneLinePrompt = summaryText.querySelector('h3'); 
+
+  // If "One-Line Prompt" exists, select the content after it
+  if (oneLinePrompt) {
+    range.setStartAfter(oneLinePrompt); // Start selection after the h3
+    range.setEndAfter(summaryText); // End selection at the end of the summary div
+  } else {
+    // If h3 doesn't exist (no one-line prompt), select all content
+    range.selectNodeContents(summaryText); 
+  }
+
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+  navigator.clipboard.writeText(selection.toString()) // Copy selected text
+    .then(() => {
+      document.getElementById('copyButton').classList.add('checked');
+      setTimeout(() => {
+        document.getElementById('copyButton').classList.remove('checked'); 
+      }, 1000);
+    })
+    .catch(err => {
+      console.error("Failed to copy: ", err);
+    });
+}
+
+// Create a "Done Editing" button (optional)
+const doneEditingButton = document.createElement('button');
+doneEditingButton.textContent = 'Done Editing';
+doneEditingButton.id = 'doneEditingButton';
+doneEditingButton.style.marginTop = '10px';
+document.body.appendChild(doneEditingButton);
+
+// Handle the "Done Editing" button click
+doneEditingButton.addEventListener('click', () => {
+  // Reset the contenteditable attribute to false
+  document.getElementById('characterSummary').setAttribute('contenteditable', false); 
+  // Hide the "Done Editing" button (optional)
+  doneEditingButton.style.display = 'none';
+}); 
+
+// ... (Other JavaScript functions) ... 
+
+function copyText() {
+  const summaryText = document.getElementById('characterSummary');
+  const range = document.createRange();
+
+  // Find the first h3 element 
+  const oneLinePrompt = summaryText.querySelector('h3'); 
+
+  // If "One-Line Prompt" exists, select the content after it
+  if (oneLinePrompt) {
+    range.setStartAfter(oneLinePrompt); 
+    range.setEndAfter(summaryText); 
+  } else {
+    // If h3 doesn't exist, select all content
+    range.selectNodeContents(summaryText); 
+  }
+
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range); // Select the text
+
+  // Copy the selected text
+  navigator.clipboard.writeText(selection.toString()) 
+    .then(() => {
+      document.getElementById('copyButton').classList.add('checked');
+      setTimeout(() => {
+        document.getElementById('copyButton').classList.remove('checked'); 
+      }, 1000);
+    })
+    .catch(err => {
+      console.error("Failed to copy: ", err);
+    });
+}
+</script>
+</body>
+</html>
